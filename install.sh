@@ -11,29 +11,43 @@ has_command() {
   fi
 }
 
-if [ 0 -eq $(has_command curl) ]; then
+get_installed_dotnet(){
+    eche dotnet --version
+}
+
+# check the curl or wget command
+if [[ 0 -eq $(has_command curl) ]]; then
      DVM_INATSLL_COMMAND="curl"
 elif [ 0 -eq $(has_command wget) ]; then
      DVM_INATSLL_COMMAND="wget"
-  else 
+  else
      echo "[ERROR] please install `wget` or `curl` command first"
      exit 1
 fi
 
 echo "START INSTALL DVM COMMAND"
-echo
 
+# create the dvm home dictionary && dotnet command will installed in dvm root dictionary
 mkdir -p ${DVM_HOME}/sdks
+mkdir -p ${DVM_HOME}/scripts
 
 if [[ ! -f "$DMV_HOME/$INSTALL_FILE_NAME" ]]; then
   rm -rf $INSTALL_FILE_NAME
 fi
 
+# user had installed dotnet by other way
+if [[ 1 -eq $(has_command dotnet) ]]; then
+    echo "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version"
+    CURRENT_DOTNET_VERSION = $(get_installed_dotnet)
+    mv -f $HOME/.dotnet/sdk $DVM_HOME/sdks
 
-$DVM_INATSLL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/$INSTALL_FILE_NAME
+
+$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/$INSTALL_FILE_NAME
 
 sudo chmod +X $DVM_HOME/$INSTALL_FILE_NAME
 
-echo "INSTALLATION COMPLETED, PELEASE ENJOY!"
+# get the current shell and remind the user to update the $PATH
+echo "Please update the to"
+echo "INSTALLATION COMPLETED, PLEASE ENJOY!"
 # bash $INSTALL_FILE_NAME -Channel 1.0
 # sudo ln -s $USERHOME/.dotnet/sdk/1.1.11 /usr/local/share/dotnet/sdk/
