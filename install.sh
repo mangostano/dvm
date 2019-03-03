@@ -12,7 +12,7 @@ has_command() {
 }
 
 get_installed_dotnet(){
-    eche dotnet --version
+    echo dotnet --version
 }
 
 # check the curl or wget command
@@ -40,11 +40,11 @@ if [[ 1 -eq $(has_command dotnet) ]]; then
     echo "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version"
     CURRENT_DOTNET_VERSION = $(get_installed_dotnet)
     mv -f $HOME/.dotnet/sdk $DVM_HOME/sdks
+fi
 
+$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/scripts/$INSTALL_FILE_NAME
 
-$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/$INSTALL_FILE_NAME
-
-sudo chmod +X $DVM_HOME/$INSTALL_FILE_NAME
+sudo chmod +X $DVM_HOME/scripts/$INSTALL_FILE_NAME
 
 # get the current shell and remind the user to update the $PATH
 echo "Please update the to"
