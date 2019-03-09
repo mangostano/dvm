@@ -42,7 +42,7 @@ fi
 
 # user had installed dotnet by other way
 if [[ 0 -eq $(has_command dotnet) ]]; then
-    echo "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version"
+    printf "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version"
     sudo rm /etc/paths.d/dotnet
     CURRENT_DOTNET_VERSION=$(get_installed_dotnet)
     # mv the installed sdk to dvm/SDKs
@@ -55,8 +55,8 @@ $DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/scripts/$I
 # curl the dvm command from repo && need user to update path
 $DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm && chomd +x $DVM_HOME/dvm
 
-echo "# This is for DVM command\n"
-echo "Please add the\n\n"
-echo "export PATH=\$HOME/.dvm:\$PATH\n\n"
-echo "to your PATH variable\n"
-echo "INSTALLATION COMPLETED, PLEASE ENJOY!"
+printf "# This is for DVM command\n"
+printf "Please add the\n\n"
+printf "export PATH=\$HOME/.dvm:\$PATH\n\n"
+printf "to your PATH variable\n"
+printf "INSTALLATION COMPLETED, PLEASE ENJOY!"
