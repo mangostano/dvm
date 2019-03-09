@@ -50,11 +50,10 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
 fi
 
 # curl the microsoft dotnet install script
-$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/scripts/$INSTALL_FILE_NAME
-chmod +X $DVM_HOME/scripts/$INSTALL_FILE_NAME
+$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/scripts/$INSTALL_FILE_NAME && chmod +X $DVM_HOME/scripts/$INSTALL_FILE_NAME
 
 # curl the dvm command from repo && need user to update path
-$DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm
+$DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm && chomd +x $DVM_HOME/dvm
 
 echo "# This is for DVM command\n"
 echo "Please add the\n\n"
