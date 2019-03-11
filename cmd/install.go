@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"log"
     "os/exec"
 	"github.com/spf13/cobra"
 )
@@ -18,8 +20,23 @@ var installCmd = &cobra.Command{
 		 fmt.Println(`not have a valid args found, please use 'dvm install --help' to get more info`);
 		 return ;
 		}
+		download(args[0])
 		fmt.Println("install called")
 	},
+}	
+
+func download(version string){
+   dvmHome := os.Getenv("DVM_HOME");
+   installFile := fmt.Sprint(dvmHome,"/scripts","/install.sh");
+   installVersion := fmt.Sprint(" --Version ", version);
+   installDir := fmt.Sprint(" --InstallDir ", dvmHome,"/sdks");
+
+   testCmd := exec.Command(installFile, installVersion, installDir);
+   testOut, err := testCmd.Output()
+   if err != nil{
+	 log.Fatal(err);
+   } 
+   fmt.Printf("%s",testOut);
 }
 
 func init() {
