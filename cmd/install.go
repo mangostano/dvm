@@ -77,7 +77,7 @@ func moveFile(sourceDir string, destDir string) {
 	cmd := exec.Command("mv", args...)
 	err := cmd.Run()
 	if err != nil {
-		retryCmd := exec.Command("mv", "-rf", fmt.Sprint(sourceDir, "*"), destDir)
+		retryCmd := exec.Command("mv", "-f", fmt.Sprint(sourceDir, "*"), destDir)
 		retryError := retryCmd.Run()
 		if retryError != nil {
 			log.Fatal("install failed when move file. ", contactUs)
