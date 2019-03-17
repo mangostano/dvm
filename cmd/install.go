@@ -96,7 +96,7 @@ func download(version string) {
 		retryCmd := exec.Command(installFile, "-c", version)
 		error := retryCmd.Run()
 		if error != nil {
-			log.Fatal("unknown dotnet version please use `dvm ls` to check the install version is correct")
+			log.Fatal("unknown dotnet version please use `dvm listAll` to check the install version is correct")
 			return
 		}
 	}
