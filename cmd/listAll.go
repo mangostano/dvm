@@ -1,38 +1,57 @@
-// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"log"
+	"net/http"
+	"sort"
 )
+
+const versionsUrl = "https://raw.githubusercontent.com/mangostano/dvm/develop/config/versions.json"
 
 // listAllCmd represents the listAll command
 var listAllCmd = &cobra.Command{
 	Use:   "listAll",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "This command to get all of the dotnet core sdk versions",
+	Long: `examples of using this command. For example:
+		dvm listAll`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("listAll called")
+		result := make(map[string][]string)
+		getVersionJsonFile(versionsUrl, result)
+		printResult(result)
 	},
+}
+
+func printResult(result map[string][]string) {
+	var mainVersions []string
+	for mainVersion := range result {
+		mainVersions = append(mainVersions, mainVersion)
+	}
+	sort.Strings(mainVersions)
+	for _, mainVersion := range mainVersions {
+		fmt.Println("    ", mainVersion)
+		for _, subVersion := range result[mainVersion] {
+			fmt.Println("\t", subVersion)
+		}
+	}
+}
+
+func getVersionJsonFile(url string, result map[string][]string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatal("unexpected http GET status: ", resp.Status)
+	}
+
+	decodeError := json.NewDecoder(resp.Body).Decode(&result)
+	if decodeError != nil {
+		log.Fatal("cannot decode JSON: ", err)
+	}
 }
 
 func init() {
