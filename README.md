@@ -5,11 +5,11 @@ dotnet core version manager
 
 # Install
 
-> `curl https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash install.sh`  
+> `curl https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash installDvm.sh`  
 
 or   
 
-> `wget https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash install.sh`
+> `wget https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash installDvm.sh`
 ## add the fellowing to you bash profile 
 ```
 export DVM_HOME=$HOME/.dvm
