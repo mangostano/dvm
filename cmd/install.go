@@ -67,7 +67,7 @@ func getDotnetSdkPath(version string) string {
 
 func getDvmSdkStorePath(version string) string {
 	if len(version) <= 0 {
-		return fmt.Sprint(getDvmHome(), "/sdks")
+		return fmt.Sprint(getDvmHome(), "/sdks/")
 	}
 	return fmt.Sprint(getDvmHome(), "/sdks/", version)
 }
