@@ -2,14 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"os"
-	"os/exec"
-
 	"github.com/spf13/cobra"
+	"log"
+	"os/exec"
 )
-
-const contactUs = "please contact us.(https://github.com/mangostano/dvm/issues)"
 
 // installCmd represents the install command
 var installCmd = &cobra.Command{
@@ -24,7 +20,7 @@ var installCmd = &cobra.Command{
 			return
 		}
 		version := args[0]
-		download(version)
+		version = download(version)
 		moveDotnetVersion(version)
 		removeOtherLink()
 		createLink(version)
@@ -33,59 +29,13 @@ var installCmd = &cobra.Command{
 	},
 }
 
-func removeOtherLink() {
-	args := []string{"-rf", fmt.Sprint(getDotnetHome(), "/sdk/*")}
-	cmd := exec.Command("rm", args...)
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal("install failed when remove other link. ", contactUs)
+func download(version string) string {
+	if checkSdkMainVersionExists(version) {
+		return version
 	}
-}
-
-func createLink(version string) {
-	source := getDvmSdkStorePath(version)
-	dest := getDotnetSdkPath("")
-	cmd := exec.Command("ln", "-s", source, dest)
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal("install failed when crate link. ", contactUs)
+	if checkSdkSubVersionExists(version) {
+		return latestSubVersion(version)
 	}
-}
-
-func moveDotnetVersion(version string) {
-	descPath := getDvmSdkStorePath(version)
-	sourcePath := getDotnetSdkPath(version)
-	moveFile(sourcePath, descPath)
-}
-
-func getDotnetSdkPath(version string) string {
-	if len(version) <= 0 {
-		return fmt.Sprint(getDotnetHome(), "/sdk/")
-	}
-	return fmt.Sprint(getDotnetHome(), "/sdk/", version)
-}
-
-func getDvmSdkStorePath(version string) string {
-	if len(version) <= 0 {
-		return fmt.Sprint(getDvmHome(), "/sdks/")
-	}
-	return fmt.Sprint(getDvmHome(), "/sdks/", version)
-}
-
-func moveFile(sourceDir string, destDir string) {
-	args := []string{"-f", sourceDir, destDir}
-	cmd := exec.Command("mv", args...)
-	err := cmd.Run()
-	if err != nil {
-		retryCmd := exec.Command("mv", "-f", fmt.Sprint(sourceDir, "*"), destDir)
-		retryError := retryCmd.Run()
-		if retryError != nil {
-			log.Fatal("install failed when move file. ", contactUs)
-		}
-	}
-}
-
-func download(version string) {
 	dvmHome := getDvmHome()
 	installFile := fmt.Sprint(dvmHome, "/scripts", "/install.sh")
 	args := []string{"-v", version}
@@ -93,30 +43,15 @@ func download(version string) {
 	fmt.Println("starting to install dotnet core sdk, this will take a few minutes, please wait!")
 	err := cmd.Run()
 	if err != nil {
-		retryCmd := exec.Command(installFile, "-c", version)
+		subVersion := latestSubVersion(version)
+		retryCmd := exec.Command(installFile, "-v", subVersion)
 		error := retryCmd.Run()
 		if error != nil {
 			log.Fatal("unknown dotnet version please use `dvm listAll` to check the install version is correct")
-			return
 		}
+		return subVersion
 	}
-}
-
-func getDvmHome() string {
-	dvmHome := os.Getenv("DVM_HOME")
-	if len(dvmHome) <= 0 {
-		dvmHome = fmt.Sprint(os.Getenv("HOME"), "/.dvm")
-	}
-	return dvmHome
-}
-
-func getDotnetHome() string {
-
-	dotnetHome := os.Getenv("DOTNET_HOME")
-	if len(dotnetHome) <= 0 {
-		dotnetHome = fmt.Sprint(os.Getenv("HOME"), "/.dotnet")
-	}
-	return dotnetHome
+	return version
 }
 
 func init() {
