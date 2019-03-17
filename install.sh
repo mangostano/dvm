@@ -6,7 +6,7 @@ DVM_COMMAND_REPO="https://github.com/mangostano/dvm/blob/master/dvm"
 has_command() {
   if ! command -v "$1" > /dev/null 2>&1
     then echo 1;
-  else 
+  else
     echo 0;
   fi
 }
@@ -42,7 +42,7 @@ fi
 
 # user had installed dotnet by other way
 if [[ 0 -eq $(has_command dotnet) ]]; then
-    printf "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version"
+    printf "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version\n"
     sudo rm /etc/paths.d/dotnet
     CURRENT_DOTNET_VERSION=$(get_installed_dotnet)
     # mv the installed sdk to dvm/SDKs
@@ -58,6 +58,7 @@ $DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm && chomd +x $DVM_HOME/dvm
 printf "# This is for DVM command\n"
 printf "Please add the\n\n"
 printf "export DVM_HOME=$DVM_HOME\n"
+prinrf "export DOTNET_HOME=$HOME/.dotnet\n"
 printf "export PATH=\$HOME/.dvm:\$PATH\n\n"
 printf "to your PATH variable\n"
 printf "INSTALLATION COMPLETED, PLEASE ENJOY!"
