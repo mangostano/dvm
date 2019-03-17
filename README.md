@@ -1,4 +1,4 @@
-# STILL DEVELOPING WILL BE COMING SOON.
+# STILL DEVELOPING WILL BE COMING SOON. (now are in preview some command not avaliable)
 
 # dvm
 dotnet core version manager
