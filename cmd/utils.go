@@ -77,12 +77,12 @@ func removeOtherLink() {
 	cmd := exec.Command("rm", args...)
 
 	if err := cmd.Run(); err != nil {
-		log.Fatal("install failed when remove other link. ", contactUs)
+		log.Fatal("remove other link failed when remove other link. ", contactUs)
 	}
 	createDir := exec.Command("mkdir", "-p", fmt.Sprint(getDotnetHome(), "/sdk"))
 
 	if err := createDir.Run(); err != nil {
-		log.Fatal("install failed when create dir sdk. ", contactUs)
+		log.Fatal("remove other link failed when create dir sdk. ", contactUs)
 	}
 }
 
@@ -92,7 +92,7 @@ func createLink(version string) {
 	cmd := exec.Command("ln", "-s", source, dest)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal("install failed when crate link. ", contactUs)
+		log.Fatal("create link failed when crate link. ", contactUs)
 	}
 }
 
@@ -101,7 +101,7 @@ func moveDotnetVersion(version string) {
 	sourcePath := getDotnetSdkPath(version)
 	if moveFile(sourcePath, descPath) != nil {
 		if !checkPathExists(getDvmSdkStorePath(version)) {
-			log.Fatal("install failed when move file check dvm home sdks. ", contactUs)
+			log.Fatal("move dotnet version failed when move file check dvm home sdks. ", contactUs)
 		}
 	}
 }
