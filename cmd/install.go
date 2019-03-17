@@ -55,7 +55,6 @@ func createLink(version string) {
 func moveDotnetVersion(version string) {
 	descPath := getDvmSdkStorePath(version)
 	sourcePath := getDotnetSdkPath(version)
-	fmt.Println("source path", sourcePath)
 	moveFile(sourcePath, descPath)
 }
 
@@ -74,7 +73,7 @@ func getDvmSdkStorePath(version string) string {
 }
 
 func moveFile(sourceDir string, destDir string) {
-	args := []string{"-rf", sourceDir, destDir}
+	args := []string{"-f", sourceDir, destDir}
 	cmd := exec.Command("mv", args...)
 	err := cmd.Run()
 	if err != nil {
