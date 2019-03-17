@@ -58,7 +58,7 @@ $DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm && chomd +x $DVM_HOME/dvm
 printf "# This is for DVM command\n"
 printf "Please add the\n\n"
 printf "export DVM_HOME=$DVM_HOME\n"
-prinrf "export DOTNET_HOME=$HOME/.dotnet\n"
+printf "export DOTNET_HOME=$HOME/.dotnet\n"
 printf "export PATH=\$HOME/.dvm:\$PATH\n\n"
 printf "to your PATH variable\n"
 printf "INSTALLATION COMPLETED, PLEASE ENJOY!"
