@@ -1,15 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
-	"log"
-	"net/http"
 	"sort"
 )
-
-const versionsUrl = "https://raw.githubusercontent.com/mangostano/dvm/develop/config/versions.json"
 
 // listAllCmd represents the listAll command
 var listAllCmd = &cobra.Command{
@@ -19,7 +14,7 @@ var listAllCmd = &cobra.Command{
 		dvm listAll`,
 	Run: func(cmd *cobra.Command, args []string) {
 		result := make(map[string][]string)
-		getVersionJsonFile(versionsUrl, result)
+		getVersionJsonFile(dotnetVersionJsonFileURL, result)
 		printResult(result)
 	},
 }
@@ -35,22 +30,6 @@ func printResult(result map[string][]string) {
 		for _, subVersion := range result[mainVersion] {
 			fmt.Println("\t", subVersion)
 		}
-	}
-}
-
-func getVersionJsonFile(url string, result map[string][]string) {
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		log.Fatal("unexpected http GET status: ", resp.Status)
-	}
-
-	decodeError := json.NewDecoder(resp.Body).Decode(&result)
-	if decodeError != nil {
-		log.Fatal("cannot decode JSON: ", err)
 	}
 }
 
