@@ -12,7 +12,12 @@ import (
 func latestSubVersion(mainVersion string) string {
 	result := make(map[string][]string)
 	getVersionJsonFile(dotnetVersionJsonFileURL, result)
-	return result[mainVersion][0]
+	if len(result[mainVersion]) != 0 {
+		return result[mainVersion][0]
+	}
+
+	log.Fatal("unknown dotnet core version, please use dvm listAll to check the version:", mainVersion, " exists or not")
+	return ""
 }
 
 func getVersionJsonFile(url string, result map[string][]string) {
@@ -37,6 +42,9 @@ func checkSdkMainVersionExists(version string) bool {
 
 func checkSdkSubVersionExists(version string) bool {
 	subVersion := latestSubVersion(version)
+	if len(subVersion) == 0 {
+		os.Exit(1)
+	}
 	return checkPathExists(getDotnetSdkPath(subVersion)) || checkPathExists(getDotnetSdkPath(subVersion))
 }
 
