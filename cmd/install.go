@@ -93,7 +93,7 @@ func download(version string) {
 	fmt.Println("starting to install dotnet core sdk, this will take a few minutes, please wait!")
 	err := cmd.Run()
 	if err != nil {
-		retryCmd := exec.Command(installFile, "-c", "version")
+		retryCmd := exec.Command(installFile, "-c", version)
 		error := retryCmd.Run()
 		if error != nil {
 			log.Fatal("unknown dotnet version please use `dvm ls` to check the install version is correct")
