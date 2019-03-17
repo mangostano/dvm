@@ -22,9 +22,9 @@ installed_dotnet_path(){
 
 # check the curl or wget command
 if [[ 0 -eq $(has_command curl) ]]; then
-     DVM_INSTALL_COMMAND="curl"
-elif [ 0 -eq $(has_command wget) ]; then
-     DVM_INSTALL_COMMAND="wget"
+     DOWNLOAD_COMMAND="curl"
+elif [[ 0 -eq $(has_command wget) ]]; then
+     DOWNLOAD_COMMAND="wget"
   else
      echo "[ERROR] please install `wget` or `curl` command first"
      exit 1
@@ -36,8 +36,8 @@ echo "START INSTALL DVM COMMAND"
 mkdir -p ${DVM_HOME}/sdks
 mkdir -p ${DVM_HOME}/scripts
 
-if [[ ! -f "$DMV_HOME/scripts/$INSTALL_FILE_NAME" ]]; then
-  rm -f "$DMV_HOME/scripts/$INSTALL_FILE_NAME"
+if [[ ! -f "${DMV_HOME}/scripts/$INSTALL_FILE_NAME" ]]; then
+  rm -f "${DMV_HOME}/scripts/$INSTALL_FILE_NAME"
 fi
 
 # user had installed dotnet by other way
@@ -46,14 +46,14 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
     sudo rm /etc/paths.d/dotnet
     CURRENT_DOTNET_VERSION=$(get_installed_dotnet)
     # mv the installed sdk to dvm/SDKs
-    sudo mv -rf $(installed_dotnet_path)/sdk/* $DVM_HOME/sdks
+    sudo mv -f $(installed_dotnet_path)/sdk/* ${DVM_HOME}/sdks
 fi
 
 # curl the microsoft dotnet install script
-$DVM_INSTALL_COMMAND https://dot.net/v1/dotnet-install.sh > $DVM_HOME/scripts/$INSTALL_FILE_NAME && chmod +X $DVM_HOME/scripts/$INSTALL_FILE_NAME
+${DOWNLOAD_COMMAND} https://dot.net/v1/dotnet-install.sh > ${DVM_HOME}/scripts/${INSTALL_FILE_NAME} && chmod +X ${DVM_HOME}/scripts/${INSTALL_FILE_NAME}
 
 # curl the dvm command from repo && need user to update path
-$DVM_INSTALL_COMMAND $DVM_COMMAND_REPO > $DVM_HOME/dvm && chomd +x $DVM_HOME/dvm
+${DOWNLOAD_COMMAND} ${DVM_COMMAND_REPO} > ${DVM_HOME}/dvm && chmod +x ${DVM_HOME}/dvm
 
 printf "# This is for DVM command\n"
 printf "Please add the\n\n"
