@@ -12,7 +12,12 @@ import (
 func latestSubVersion(mainVersion string) string {
 	result := make(map[string][]string)
 	getVersionJsonFile(dotnetVersionJsonFileURL, result)
-	return result[mainVersion][0]
+	if len(result[mainVersion]) != 0 {
+		return result[mainVersion][0]
+	}
+
+	log.Fatal("unknown dotnet core version, please use dvm listAll to check the version:", mainVersion, " exists or not")
+	return ""
 }
 
 func getVersionJsonFile(url string, result map[string][]string) {
@@ -37,6 +42,9 @@ func checkSdkMainVersionExists(version string) bool {
 
 func checkSdkSubVersionExists(version string) bool {
 	subVersion := latestSubVersion(version)
+	if len(subVersion) == 0 {
+		os.Exit(1)
+	}
 	return checkPathExists(getDotnetSdkPath(subVersion)) || checkPathExists(getDotnetSdkPath(subVersion))
 }
 
@@ -69,12 +77,12 @@ func removeOtherLink() {
 	cmd := exec.Command("rm", args...)
 
 	if err := cmd.Run(); err != nil {
-		log.Fatal("install failed when remove other link. ", contactUs)
+		log.Fatal("remove other link failed when remove other link. ", contactUs)
 	}
 	createDir := exec.Command("mkdir", "-p", fmt.Sprint(getDotnetHome(), "/sdk"))
 
 	if err := createDir.Run(); err != nil {
-		log.Fatal("install failed when create dir sdk. ", contactUs)
+		log.Fatal("remove other link failed when create dir sdk. ", contactUs)
 	}
 }
 
@@ -84,7 +92,7 @@ func createLink(version string) {
 	cmd := exec.Command("ln", "-s", source, dest)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal("install failed when crate link. ", contactUs)
+		log.Fatal("create link failed when crate link. ", contactUs)
 	}
 }
 
@@ -93,7 +101,7 @@ func moveDotnetVersion(version string) {
 	sourcePath := getDotnetSdkPath(version)
 	if moveFile(sourcePath, descPath) != nil {
 		if !checkPathExists(getDvmSdkStorePath(version)) {
-			log.Fatal("install failed when move file check dvm home sdks. ", contactUs)
+			log.Fatal("move dotnet version failed when move file check dvm home sdks. ", contactUs)
 		}
 	}
 }
