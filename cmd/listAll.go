@@ -4,41 +4,54 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
-	"io/ioutil"
 	"log"
-	"os"
+	"net/http"
 	"sort"
 )
+
+const versionsUrl = "https://raw.githubusercontent.com/mangostano/dvm/develop/config/versions.json"
 
 // listAllCmd represents the listAll command
 var listAllCmd = &cobra.Command{
 	Use:   "listAll",
 	Short: "This command to get all of the dotnet core sdk versions",
 	Long: `examples of using this command. For example:
-		dvm list-all`,
+		dvm listAll`,
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonFile, err := os.Open("/Users/lqqu/go/src/dotnet-manager/dvm/config/versions.json")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer jsonFile.Close()
-
-		byteValue, _ := ioutil.ReadAll(jsonFile)
 		result := make(map[string][]string)
-		json.Unmarshal([]byte(byteValue), &result)
-
-		var mainVersions []string
-		for mainVersion := range result {
-			mainVersions = append(mainVersions, mainVersion)
-		}
-		sort.Strings(mainVersions)
-		for _, mainVersion := range mainVersions {
-			fmt.Println("    ", mainVersion)
-			for index := range result[mainVersion] {
-				fmt.Println("\t", result[mainVersion][index])
-			}
-		}
+		getVersionJsonFile(versionsUrl, result)
+		printResult(result)
 	},
+}
+
+func printResult(result map[string][]string) {
+	var mainVersions []string
+	for mainVersion := range result {
+		mainVersions = append(mainVersions, mainVersion)
+	}
+	sort.Strings(mainVersions)
+	for _, mainVersion := range mainVersions {
+		fmt.Println("    ", mainVersion)
+		for _, subVersion := range result[mainVersion] {
+			fmt.Println("\t", subVersion)
+		}
+	}
+}
+
+func getVersionJsonFile(url string, result map[string][]string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatal("unexpected http GET status: ", resp.Status)
+	}
+
+	decodeError := json.NewDecoder(resp.Body).Decode(&result)
+	if decodeError != nil {
+		log.Fatal("cannot decode JSON: ", err)
+	}
 }
 
 func init() {
