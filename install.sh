@@ -1,7 +1,7 @@
 #!/bin/sh
 INSTALL_FILE_NAME="install.sh"
 DVM_HOME="$HOME/.dvm"
-DVM_COMMAND_REPO="https://github.com/mangostano/dvm/blob/master/dvm"
+DVM_COMMAND_REPO="https://raw.githubusercontent.com/mangostano/dvm/develop/dvm"
 
 has_command() {
   if ! command -v "$1" > /dev/null 2>&1
