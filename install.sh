@@ -1,6 +1,7 @@
 #!/bin/sh
 INSTALL_FILE_NAME="install.sh"
 DVM_HOME="$HOME/.dvm"
+DOTNET_HOME="$HOME/.dotnet"
 DVM_COMMAND_REPO="https://raw.githubusercontent.com/mangostano/dvm/develop/dvm"
 
 has_command() {
@@ -35,6 +36,7 @@ echo "START INSTALL DVM COMMAND"
 # create the dvm home dictionary && dotnet command will installed in dvm root dictionary
 mkdir -p ${DVM_HOME}/sdks
 mkdir -p ${DVM_HOME}/scripts
+mkdir -p ${DOTNET_HOME}
 
 if [[ ! -f "${DMV_HOME}/scripts/$INSTALL_FILE_NAME" ]]; then
   rm -f "${DMV_HOME}/scripts/$INSTALL_FILE_NAME"
@@ -46,7 +48,9 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
     sudo rm /etc/paths.d/dotnet
     CURRENT_DOTNET_VERSION=$(get_installed_dotnet)
     # mv the installed sdk to dvm/SDKs
+    sudo rm -rf $(installed_dotnet_path)/sdk/Nuget*
     sudo mv -f $(installed_dotnet_path)/sdk/* ${DVM_HOME}/sdks
+    sudo mv -f $(installed_dotnet_path)/* ${DOTNET_HOME}/
 fi
 
 # curl the microsoft dotnet install script
@@ -59,6 +63,7 @@ printf "\n# This is for DVM command\n"
 printf "Please add the\n\n"
 printf "export DVM_HOME=$DVM_HOME\n"
 printf "export DOTNET_HOME=$HOME/.dotnet\n"
-printf "export PATH=\$HOME/.dvm:\$PATH\n\n"
+printf "export PATH=\$DOTNET_HOME:\$PATH\n"
+printf "export PATH=\$DVM_HOME:\$PATH\n\n"
 printf "to your PATH variable\n"
 printf "INSTALLATION COMPLETED, PLEASE ENJOY!"
