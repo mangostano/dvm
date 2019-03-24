@@ -48,11 +48,10 @@ func download(version string) string {
 	if err != nil {
 		subVersion := latestSubVersion(version)
 		retryCmd := exec.Command(installFile, "-v", subVersion)
-		output, error := retryCmd.Output()
+		error := retryCmd.Run()
 		if error != nil {
 			log.Fatal("unknown dotnet version please use `dvm listAll` to check the install version is correct")
 		}
-		fmt.Println(output)
 		return subVersion
 	}
 	return version
