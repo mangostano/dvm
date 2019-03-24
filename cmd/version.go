@@ -9,7 +9,7 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "This command to show the DVM version",
-	Long: `Simple useage:  
+	Long: `Simple usage:  
  dvm version`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Your current DVM version is :", currentVersion)
