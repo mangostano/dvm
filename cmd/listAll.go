@@ -14,7 +14,7 @@ var listAllCmd = &cobra.Command{
 		dvm listAll`,
 	Run: func(cmd *cobra.Command, args []string) {
 		result := make(map[string][]string)
-		getVersionJsonFile(dotnetVersionJsonFileURL, result)
+		getVersionJsonFile(fmt.Sprintf(versionFileUrlTemplate, currentVersion), result)
 		printResult(result)
 	},
 }

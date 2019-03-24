@@ -11,7 +11,7 @@ import (
 
 func latestSubVersion(mainVersion string) string {
 	result := make(map[string][]string)
-	getVersionJsonFile(dotnetVersionJsonFileURL, result)
+	getVersionJsonFile(fmt.Sprintf(versionFileUrlTemplate, currentVersion), result)
 	if len(result[mainVersion]) != 0 {
 		return result[mainVersion][0]
 	}
