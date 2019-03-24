@@ -28,7 +28,7 @@ func getUsingVersion() string {
 	res, err := cmd.Output()
 
 	if err != nil {
-		log.Fatal(UNEXPECTED_ERROR)
+		log.Fatal("Can't get current using version, ", err, contactUs)
 	}
 
 	return string(res)
@@ -91,12 +91,12 @@ func removeOtherLink() {
 	cmd := exec.Command("rm", args...)
 
 	if err := cmd.Run(); err != nil {
-		log.Fatal("remove other link failed when remove other link. ", contactUs)
+		log.Fatal("remove other link failed when remove other link. ", err, contactUs)
 	}
 	createDir := exec.Command("mkdir", "-p", fmt.Sprint(getDotnetHome(), "/sdk"))
 
 	if err := createDir.Run(); err != nil {
-		log.Fatal("remove other link failed when create dir sdk. ", contactUs)
+		log.Fatal("remove other link failed when create dir sdk. ", err, contactUs)
 	}
 }
 
@@ -106,7 +106,7 @@ func createLink(version string) {
 	cmd := exec.Command("ln", "-s", source, dest)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal("create link failed when crate link. ", contactUs)
+		log.Fatal("create link failed when crate link. ", err, contactUs)
 	}
 }
 
@@ -141,13 +141,13 @@ func moveFile(sourceDir string, destDir string) error {
 	return err
 }
 
-func getInstallVersions() []string {
+func getInstalledVersions() []string {
 	sdksPath := getDvmSdkStorePath("")
 	cmd := exec.Command("ls", sdksPath)
 	out, err := cmd.Output()
 
 	if err != nil {
-		log.Fatal(UNEXPECTED_ERROR)
+		log.Fatal("Can't get installed versions, ", err, contactUs)
 	}
 	return strings.Split(string(out), "\n")
 }

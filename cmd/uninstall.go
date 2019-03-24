@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 	"log"
 	"os/exec"
-	"strings"
 )
 
 // uninstallCmd represents the uninstall command
@@ -21,14 +20,15 @@ var uninstallCmd = &cobra.Command{
 			return
 		}
 
-		version := strings.TrimSpace(args[0])
-		installVersion := getInstallVersions()
+		version := args[0]
+
+		installVersion := getInstalledVersions()
 
 		if !contains(installVersion, version) {
 			log.Fatal("The uninstall version:" + version + " not in location")
 		}
 
-		if version == strings.TrimSpace(getUsingVersion()) {
+		if version == getUsingVersion() {
 			log.Fatal("The uninstall version:" + version + " is using, please change using version")
 		}
 
