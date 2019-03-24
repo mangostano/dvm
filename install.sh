@@ -48,7 +48,7 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
     sudo rm /etc/paths.d/dotnet
     CURRENT_DOTNET_VERSION=$(get_installed_dotnet)
     # mv the installed sdk to dvm/SDKs
-    sudo rm -rf $(installed_dotnet_path)/sdk/Nuget*
+    sudo rm -rf $(installed_dotnet_path)/sdk/NuGet*
     sudo mv -f $(installed_dotnet_path)/sdk/* ${DVM_HOME}/sdks
     sudo mv -f $(installed_dotnet_path)/* ${DOTNET_HOME}/
 fi
