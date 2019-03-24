@@ -14,7 +14,8 @@ or
 ```
 export DVM_HOME=$HOME/.dvm
 export DOTNET_HOME=$HOME/.dotnet
-export PATH=$HOME/.dvm:$PATH
+export PATH=$DVM_HOME:$PATH
+export PATH=$DOTNET_HOME:$PATH
 ```
 (example) if you are using [zsh](https://github.com/robbyrussell/oh-my-zsh), add to your `.zshrc` file.
 
