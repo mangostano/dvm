@@ -13,7 +13,7 @@ var listCmd = &cobra.Command{
 	Args:  cobra.NoArgs,
 	Short: "list you local installed dotnet core sdk version",
 	Long: `examples of using this command. For example:
-    dvm list   -- list all local sdk`,
+    dvm list   -- list all local sdks`,
 	Run: func(cmd *cobra.Command, args []string) {
 		getLocalList()
 	},
