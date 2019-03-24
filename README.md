@@ -24,6 +24,6 @@ remove the `.dvm` dictionary
 exam `sudo rm -f ~/.dvm`
 
 # How to contribute 
-## the branch name is follow the [git flow](https://jeffkreeftmeijer.com/git-flow/) , the branch name is git flow default naming conversion
+the branch name is follow the [git flow](https://jeffkreeftmeijer.com/git-flow/) , the branch name is git flow default naming conversion
 
 # [MIT LICENSE](./LICENSE)
