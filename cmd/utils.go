@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func latestSubVersion(mainVersion string) string {
@@ -18,6 +19,18 @@ func latestSubVersion(mainVersion string) string {
 
 	log.Fatal("unknown dotnet core version, please use dvm listAll to check the version:", mainVersion, " exists or not")
 	return ""
+}
+
+func getUsingVersion() string {
+	args := []string{getDotnetSdkPath("")}
+	cmd := exec.Command("ls", args...)
+
+	res, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+
+	return string(res[:])
 }
 
 func getVersionJsonFile(url string, result map[string][]string) {
@@ -125,4 +138,32 @@ func moveFile(sourceDir string, destDir string) error {
 	cmd := exec.Command("mv", args...)
 	err := cmd.Run()
 	return err
+}
+
+func deleteSDK(version string) error {
+	args := []string{"-rf", getDvmSdkStorePath(version)}
+	cmd := exec.Command("rm", args...)
+
+	err := cmd.Run()
+	return err
+}
+
+func getInstallVersions() []string {
+	sdksPath := getDvmSdkStorePath("")
+	cmd := exec.Command("ls", sdksPath)
+	out, err := cmd.Output()
+
+	if err != nil {
+
+	}
+	return strings.Split(string(out), "\n")
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
