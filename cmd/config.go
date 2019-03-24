@@ -1,6 +1,6 @@
 package cmd
 
-const currentVersion = "0.1.0"
+const currentVersion = "develop"
 
 const versionFileUrlTemplate = "https://raw.githubusercontent.com/mangostano/dvm/%s/config/versions.json"
 
