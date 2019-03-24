@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"log"
 	"os/exec"
@@ -9,16 +10,18 @@ import (
 
 // installCmd represents the install command
 var installCmd = &cobra.Command{
-	Use:   "install",
+	Use: "install",
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) <= 0 {
+			errors.New("not have a valid args found, please use 'dvm install -h' to get more info")
+		}
+		return nil
+	},
 	Short: "This command use to install sdk",
 	Long: `This is simply brief introduce the 'install' command 
 	here is the basic usage
 	'dvm install 1.1' this will install dotnet core 1.1 LTS `,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println(`not have a valid args found, please use 'dvm install --help' to get more info`)
-			return
-		}
 		version := args[0]
 		version = download(version)
 		moveDotnetVersion(version)
@@ -45,10 +48,11 @@ func download(version string) string {
 	if err != nil {
 		subVersion := latestSubVersion(version)
 		retryCmd := exec.Command(installFile, "-v", subVersion)
-		error := retryCmd.Run()
+		output, error := retryCmd.Output()
 		if error != nil {
 			log.Fatal("unknown dotnet version please use `dvm listAll` to check the install version is correct")
 		}
+		fmt.Println(output)
 		return subVersion
 	}
 	return version

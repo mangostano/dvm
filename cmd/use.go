@@ -22,7 +22,7 @@ var useCmd = &cobra.Command{
 			} else {
 				installCmd := exec.Command("dvm", "install", version)
 				if err := installCmd.Run(); err != nil {
-					log.Fatal("please use dvm install ", version, " to install this command")
+					log.Fatal("please use dvm install ", version, " to install")
 				}
 
 			}

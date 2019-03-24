@@ -10,6 +10,7 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
+	Args:  cobra.NoArgs,
 	Short: "list you local installed dotnet core sdk version",
 	Long: `examples of using this command. For example:
     dvm list   -- list all local sdk`,

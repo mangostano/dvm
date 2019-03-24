@@ -8,6 +8,7 @@ import (
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
+	Args:  cobra.NoArgs,
 	Short: "This command to show the DVM version",
 	Long: `Simple usage:  
  dvm version`,
