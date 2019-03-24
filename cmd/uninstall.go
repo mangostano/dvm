@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"log"
+	"os/exec"
 	"strings"
 )
 
@@ -37,6 +38,14 @@ var uninstallCmd = &cobra.Command{
 		}
 		fmt.Println("uninstall completely")
 	},
+}
+
+func deleteSDK(version string) error {
+	args := []string{"-rf", getDvmSdkStorePath(version)}
+	cmd := exec.Command("rm", args...)
+
+	err := cmd.Run()
+	return err
 }
 
 func init() {

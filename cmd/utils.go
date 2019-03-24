@@ -22,15 +22,16 @@ func latestSubVersion(mainVersion string) string {
 }
 
 func getUsingVersion() string {
-	args := []string{getDotnetSdkPath("")}
-	cmd := exec.Command("ls", args...)
+	path := getDotnetSdkPath("")
+	cmd := exec.Command("ls", path)
 
 	res, err := cmd.Output()
+
 	if err != nil {
-		return ""
+		log.Fatal(UNEXPECTED_ERROR)
 	}
 
-	return string(res[:])
+	return string(res)
 }
 
 func getVersionJsonFile(url string, result map[string][]string) {
@@ -140,21 +141,13 @@ func moveFile(sourceDir string, destDir string) error {
 	return err
 }
 
-func deleteSDK(version string) error {
-	args := []string{"-rf", getDvmSdkStorePath(version)}
-	cmd := exec.Command("rm", args...)
-
-	err := cmd.Run()
-	return err
-}
-
 func getInstallVersions() []string {
 	sdksPath := getDvmSdkStorePath("")
 	cmd := exec.Command("ls", sdksPath)
 	out, err := cmd.Output()
 
 	if err != nil {
-
+		log.Fatal(UNEXPECTED_ERROR)
 	}
 	return strings.Split(string(out), "\n")
 }
