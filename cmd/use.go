@@ -16,6 +16,10 @@ var useCmd = &cobra.Command{
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		version := args[0]
+		if getUsingVersion() == version {
+			fmt.Println("now you dotnet core sdk version is: ", version)
+			return
+		}
 		if !checkSdkMainVersionExists(version) {
 			if checkSdkSubVersionExists(version) {
 				version = latestSubVersion(version)
