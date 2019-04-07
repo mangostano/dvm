@@ -2,7 +2,7 @@
 INSTALL_FILE_NAME="install.sh"
 DVM_HOME="$HOME/.dvm"
 DOTNET_HOME="$HOME/.dotnet"
-DVM_COMMAND_REPO="https://raw.githubusercontent.com/mangostano/dvm/develop/dvm"
+DVM_COMMAND_REPO="https://raw.githubusercontent.com/mangostano/dvm/master/dvm"
 
 has_command() {
   if ! command -v "$1" > /dev/null 2>&1
