@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -32,6 +33,51 @@ func getUsingVersion() string {
 	}
 
 	return string(res)
+}
+
+func getLatestDvmVersion() string {
+	url := latestDvmVersionURL
+	result := make(map[string][]string)
+	getVersionJsonFile(url, result)
+	return result["version"][0]
+}
+
+func removeOldDvmVersion() {
+	oldDvmFile := fmt.Sprintf(getDvmHome(), "/dvm")
+	cmd := exec.Command("rm", oldDvmFile)
+	if err := cmd.Run(); err != nil {
+		log.Fatal("[Error] remove old dvm version error,", err, contactUs)
+	}
+}
+
+func installLatestDvmVersion(version string) {
+	resp, err := http.Get(fmt.Sprintf(DVM_COMMAND_REPO, version))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		log.Fatal("[Error] unexpected http GET status: ", resp.Status)
+	}
+
+	out, err := os.Create(fmt.Sprintf(getDvmHome(), "/dvm"))
+
+	if err != nil {
+		log.Fatal("[Error] create dvm file error,", err, contactUs)
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+
+	if err != nil {
+		log.Fatal("[Error] copy file to dvm error", err, contactUs)
+	}
+	cmd := exec.Command("chmod", "+x", fmt.Sprintf(getDvmHome(), "/dvm"))
+	err = cmd.Run()
+	if err != nil {
+		log.Fatal("[Error] change dvm file permission error, now you can use `chmod +x ~/.dvm/dvm` to simply solve this", err, contactUs)
+	}
 }
 
 func getVersionJsonFile(url string, result map[string][]string) {
