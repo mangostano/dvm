@@ -51,6 +51,7 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
     sudo mv -f $(get_dotnet_path)/sdk/* ${DVM_HOME}/sdks
     sudo rm -rf ${DVM_HOME}/sdks/Nu*
     sudo mv -f $(get_dotnet_path)/* ${DOTNET_HOME}/
+    sudo chmod -R 750 ${DVM_HOME} ${DOTNET_HOME}
     sudo ln -s ${DVM_HOME}/sdks/${DOTNET_VERSION} ${DOTNET_HOME}/sdk/
 fi
 
