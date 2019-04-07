@@ -1,38 +1,46 @@
-// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"sort"
 )
 
 // listAllCmd represents the listAll command
 var listAllCmd = &cobra.Command{
 	Use:   "listAll",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "This command to get all of the dotnet core sdk versions",
+	Long: `examples of using this command. For example:
+		dvm listAll     --This will be list all versions
+        dvm listAll 1.1  --This will be list 1.1's sub versions`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("listAll called")
+		result := make(map[string][]string)
+		getVersionJsonFile(fmt.Sprintf(versionFileUrlTemplate, currentVersion), result)
+		printResult(result, args)
 	},
+}
+
+func printResult(result map[string][]string, args []string) {
+	var mainVersions []string
+	for mainVersion := range result {
+		mainVersions = append(mainVersions, mainVersion)
+	}
+	sort.Strings(mainVersions)
+	if len(args) > 0 {
+		if _, ok := result[args[0]]; ok {
+			fmt.Println("    ", args[0])
+			for _, subVersion := range result[args[0]] {
+				fmt.Println("\t", subVersion)
+			}
+		}
+	} else {
+		for _, mainVersion := range mainVersions {
+			fmt.Println("    ", mainVersion)
+			for _, subVersion := range result[mainVersion] {
+				fmt.Println("\t", subVersion)
+			}
+		}
+	}
 }
 
 func init() {

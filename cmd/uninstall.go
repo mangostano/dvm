@@ -1,50 +1,53 @@
-// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"log"
+	"os/exec"
 )
 
 // uninstallCmd represents the uninstall command
 var uninstallCmd = &cobra.Command{
 	Use:   "uninstall",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "This command use to uninstall sdk",
+	Long: `This is simply brief introduce the 'uninstall' command 
+	here is the basic usage
+	'dvm uninstall 1.1' this will uninstall dotnet core 1.1 LTS`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("uninstall called")
+		if len(args) == 0 || len(args) > 1 {
+			fmt.Println(`not have a valid args found, please use 'dvm uninstall --help' to get more info`)
+			return
+		}
+
+		version := args[0]
+
+		installVersion := getInstalledVersions()
+
+		if !contains(installVersion, version) {
+			log.Fatal("The uninstall version:" + version + " not in location")
+		}
+
+		if version == getUsingVersion() {
+			log.Fatal("The uninstall version:" + version + " is using, please change using version")
+		}
+
+		err := deleteSDK(version)
+		if err != nil {
+			log.Fatal("The input version:" + version + " is a wrong version or not installed")
+		}
+		fmt.Println("uninstall completely")
 	},
+}
+
+func deleteSDK(version string) error {
+	args := []string{"-rf", getDvmSdkStorePath(version)}
+	cmd := exec.Command("rm", args...)
+
+	err := cmd.Run()
+	return err
 }
 
 func init() {
 	rootCmd.AddCommand(uninstallCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// uninstallCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// uninstallCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
