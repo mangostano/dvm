@@ -1,15 +1,20 @@
-# STILL DEVELOPING WILL BE COMING SOON. (now are in preview some command not working, but most command already done)
-
 # dvm
 dotnet core version manager
 
+# Features
+
+
+
+# How to use
+`dvm help` you will get all the feature about the `dvm` 
+
 # Install
 
-> `curl https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash installDvm.sh`  
+> `curl https://raw.githubusercontent.com/mangostano/dvm/master/install.sh >> installDvm.sh && bash installDvm.sh`  
 
 or   
 
-> `wget https://raw.githubusercontent.com/mangostano/dvm/develop/install.sh >> installDvm.sh && bash installDvm.sh`
+> `wget https://raw.githubusercontent.com/mangostano/dvm/master/install.sh >> installDvm.sh && bash installDvm.sh`
 ## add the fellowing to you bash profile 
 ```
 export DVM_HOME=$HOME/.dvm
