@@ -2,6 +2,19 @@
 dotnet core version manager
 
 # Features
+| Command | Description|
+|-----| ----|
+|current      |This command use to show you current dotnet core SDK version |
+|  help       |Help about any command|
+|  install    |This command use to install sdk|
+|  list       |list you local installed dotnet core sdk version|
+|  listAll    |This command to get all of the dotnet core sdk versions|
+|  uninstall  |This command use to uninstall sdk|
+|  upgrade    |Upgrade your dvm version|
+|  use        |change local dotnet core version|
+|  version    |This command to show the DVM version|
+
+
 [![DEMO VIDEO](https://img.youtube.com/vi/2cLqHbYQ60I/0.jpg)](https://www.youtube.com/watch?v=2cLqHbYQ60I)
 
 
