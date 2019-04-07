@@ -14,9 +14,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "dvm",
 	Short: "\ndotnet core version manager (https://github.com/mangostano/dvm)",
-	Long: `This is a personal project, non-profit. and if you have any question pls contact us.
-	  you can by email()
-	`,
+	Long:  `This is a personal project, non-profit. and if you have any question pls contact us.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
