@@ -9,6 +9,7 @@ dotnet core version manager
 `dvm help` you will get all the feature about the `dvm` 
 
 # Install
+please use [1.0.0's release](https://github.com/mangostano/dvm/tree/1.0.0)
 
 > `curl https://raw.githubusercontent.com/mangostano/dvm/master/install.sh >> installDvm.sh && bash installDvm.sh`  
 
