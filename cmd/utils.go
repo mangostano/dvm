@@ -51,7 +51,7 @@ func getVersionJsonFile(url string, result map[string][]string) {
 }
 
 func checkSdkMainVersionExists(version string) bool {
-	return checkPathExists(getDotnetSdkPath(version)) || checkPathExists(getDvmSdkStorePath(version))
+	return checkPathExists(getDvmSdkStorePath(version)) || checkPathExists(getDotnetSdkPath(version))
 }
 
 func checkSdkSubVersionExists(version string) bool {
@@ -59,7 +59,7 @@ func checkSdkSubVersionExists(version string) bool {
 	if len(subVersion) == 0 {
 		os.Exit(1)
 	}
-	return checkPathExists(getDotnetSdkPath(subVersion)) || checkPathExists(getDotnetSdkPath(subVersion))
+	return checkPathExists(getDvmSdkStorePath(subVersion)) || checkPathExists(getDotnetSdkPath(subVersion))
 }
 
 func checkPathExists(path string) bool {
