@@ -14,8 +14,10 @@ var upgradeCmd = &cobra.Command{
 		if strings.EqualFold(latestDvmVersion, currentVersion) {
 			fmt.Println("[INFO] Your DVM version is the latest version, no need upgrade!")
 		} else {
+			fmt.Println("[Info] now your are download the latest DVM version, this will be take a few minutes, please wait...")
 			removeOldDvmVersion()
 			installLatestDvmVersion(latestDvmVersion)
+			fmt.Println("[Info] DVM upgrade finish, now your DVM version is ", latestDvmVersion)
 		}
 	},
 }
