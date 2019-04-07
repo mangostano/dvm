@@ -25,6 +25,11 @@ get_user_name(){
    whoami
 }
 
+if [[ 0 -eq $(has_command dvm) ]]; then
+     echo "[INFO] dvm command already installed"
+     exit 1;
+fi
+
 # check the curl or wget command
 if [[ 0 -eq $(has_command curl) ]]; then
      DOWNLOAD_COMMAND="curl"
@@ -53,10 +58,10 @@ if [[ 0 -eq $(has_command dotnet) ]]; then
     DOTNET_VERSION=$(get_dotnet_version)
     # mv the installed sdk to dvm/SDKs
     sudo mv -f $(get_dotnet_path)/sdk/* ${DVM_HOME}/sdks
-    sudo rm -rf ${DVM_HOME}/sdks/Nu*
     sudo mv -f $(get_dotnet_path)/* ${DOTNET_HOME}/
     sudo chown -R $(get_user_name) ${DVM_HOME} ${DOTNET_HOME}
-    sudo ln -s ${DVM_HOME}/sdks/${DOTNET_VERSION} ${DOTNET_HOME}/sdk/
+    rm -rf ${DVM_HOME}/sdks/N*
+    ln -s ${DVM_HOME}/sdks/${DOTNET_VERSION} ${DOTNET_HOME}/sdk/
 fi
 
 # curl the microsoft dotnet install script
