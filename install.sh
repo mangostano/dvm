@@ -13,7 +13,7 @@ has_command() {
 }
 
 get_dotnet_version(){
-    echo dotnet --version
+    dotnet --version
 }
 
 get_dotnet_path(){
@@ -46,12 +46,11 @@ fi
 if [[ 0 -eq $(has_command dotnet) ]]; then
     printf "Your had installed the dotnet by other ways, dvm is handle.\n After this, you can continue use the current version\n"
     sudo rm /etc/paths.d/dotnet
-    CURRENT_DOTNET_VERSION=$(get_dotnet_version)
     # mv the installed sdk to dvm/SDKs
     sudo rm -rf $(get_dotnet_path)/sdk/NuGet*
     sudo mv -f $(get_dotnet_path)/sdk/* ${DVM_HOME}/sdks
     sudo mv -f $(get_dotnet_path)/* ${DOTNET_HOME}/
-    sudo ln -s ${DVM_HOME}/sdks/${CURRENT_DOTNET_VERSION} ${DOTNET_HOME}/sdk/
+    sudo ln -s ${DVM_HOME}/sdks/$(get_dotnet_version) ${DOTNET_HOME}/sdk/
 fi
 
 # curl the microsoft dotnet install script
