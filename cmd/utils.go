@@ -43,7 +43,7 @@ func getLatestDvmVersion() string {
 }
 
 func removeOldDvmVersion() {
-	oldDvmFile := fmt.Sprintf(getDvmHome(), "/dvm")
+	oldDvmFile := fmt.Sprint(getDvmHome(), "/dvm")
 	cmd := exec.Command("rm", oldDvmFile)
 	if err := cmd.Run(); err != nil {
 		log.Fatal("[Error] remove old dvm version error,", err, contactUs)
@@ -61,7 +61,7 @@ func installLatestDvmVersion(version string) {
 		log.Fatal("[Error] unexpected http GET status: ", resp.Status)
 	}
 
-	out, err := os.Create(fmt.Sprintf(getDvmHome(), "/dvm"))
+	out, err := os.Create(fmt.Sprint(getDvmHome(), "/dvm"))
 
 	if err != nil {
 		log.Fatal("[Error] create dvm file error,", err, contactUs)
@@ -73,7 +73,7 @@ func installLatestDvmVersion(version string) {
 	if err != nil {
 		log.Fatal("[Error] copy file to dvm error", err, contactUs)
 	}
-	cmd := exec.Command("chmod", "+x", fmt.Sprintf(getDvmHome(), "/dvm"))
+	cmd := exec.Command("chmod", "+x", fmt.Sprint(getDvmHome(), "/dvm"))
 	err = cmd.Run()
 	if err != nil {
 		log.Fatal("[Error] change dvm file permission error, now you can use `chmod +x ~/.dvm/dvm` to simply solve this", err, contactUs)
