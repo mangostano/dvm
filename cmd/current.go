@@ -9,7 +9,7 @@ import (
 // currentCmd represents the current command
 var currentCmd = &cobra.Command{
 	Use:   "current",
-	Short: "This command use to uninstall sdk",
+	Short: "This command use to show you current dotnet core SDK version",
 	Args:  cobra.NoArgs,
 	Long: `Simple usage:
  dvm current'`,
